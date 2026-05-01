@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] – NatGasHub</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Sora:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/nomination.css" asp-append-version="true" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+
+    <!-- open button -->
+    <button id="menuOpenBtn" class="menu-btn menu-open-btn" type="button">☰</button>
+
+    <div class="app-shell">
+
+        <aside class="sidebar" id="sidebar">
+            <!-- close button inside sidebar -->
+            <button id="menuCloseBtn" class="menu-btn menu-close-btn" type="button">☰</button>
+
+            <div class="sidebar-logo">
+                <img src="~/images/Logo.png" alt="NatGasHub" style="width:100%; max-width:150px; object-fit:contain" />
+            </div>
+
+            <nav class="sidebar-nav">
+                <a class="nav-item @(ViewData["ActiveNav"]?.ToString() == "Dashboard" ? "active" : "")"
+                   href="/Dashboard">
+                    <span class="nav-icon">▦</span> Dashboard
+                </a>
+
+                <div class="nav-item @(ViewData["ActiveNav"]?.ToString()?.StartsWith("Nom") == true ? "active" : "")"
+                     data-toggle="nav-noms">
+                    <span class="nav-icon">≡</span> Noms
+                    <span class="nav-arrow">▾</span>
+                </div>
+            </nav>
+            <div class="mobile-user-panel">
+                <div class="sidebar-user">
+                    <div class="sidebar-avatar">
+                        @(Context.Session.GetString("UserName")?.Substring(0, 1).ToUpper() ?? "?")
+                    </div>
+                    <div class="sidebar-username">
+                        @Context.Session.GetString("UserName")
+                    </div>
+                </div>
+
+            @*     <form method="post" action="/Account/Logout">
+                    <button type="submit" class="sidebar-logout">
+                        🚪 Logout
+                    </button>
+                </form>
+           *@ </div>
+        </aside>
+
+        <div id="overlay"></div>
+
+        <div class="sidebar-resizer" id="sidebarResizer"></div>
+
+        <div class="main-content" id="mainContent">
+            @RenderBody()
+
+            <footer class="app-footer">
+                For live help or tech support via screen share, please email
+                <a href="mailto:GasPro@NatGasHub.com">GasPro@NatGasHub.com</a>
+                or call 713.999.1188 Option 1<br />
+                <span style="font-size:10.5px;">
+                    NAESB™ Certified. SOC2 Certified. Penetration Tested. Nom One &amp; Done™.
+                    Sharing data is a violation of confidentiality agreement. Copyright© 2026.
+                </span>
+            </footer>
+        </div>
+    </div>
+
+    @* <script src="~/js/nomination.js" asp-append-version="true"></script> *@
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

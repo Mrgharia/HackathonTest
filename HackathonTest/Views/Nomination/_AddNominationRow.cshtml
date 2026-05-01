@@ -1,0 +1,351 @@
+﻿@model HackathonTest.Models.NominationViewModel
+
+
+<tr class="add-row">
+    <td>
+        <input type="checkbox" class="row-checkbox" />
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic roh" name="NewRecord.NomStatus">
+            <option value="">--select--</option>
+            @foreach (var i in Model.NomStatuses)
+            {
+                <option value="@i" selected="@(Model.NewRecord?.NomStatus == i ? "selected" : null)">@i</option>
+            }
+
+
+
+        </select>
+    </td>
+
+
+
+    <td>
+        <input type="text" class=" input-box cell-select" name="NewRecord.GisbStatus" value="@(Model.NewRecord?.GisbStatus)" />
+    </td>
+
+    <td>
+        <input type="number" class=" input-box cell-select" name="NewRecord.SchedQty" value="@(Model.NewRecord?.SchedQty)" />
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.TransType">
+            <option value="">--select--</option>
+            @foreach (var t in Model.TransactionTypes)
+            {
+                <option value="@t">@t</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.QuantityTypeIndicator">
+
+            <option value="">--select--</option>
+            @foreach (var i in Model.QuantityTypeIndicators)
+            {
+                <option value="@i" selected="@(Model.NewRecord?.QuantityTypeIndicator == i ? "selected" : null)">@i</option>
+            }
+
+        </select>
+    </td>
+
+    <td>
+        <input type="date" class="cell-select-orange" name="NewRecord.StartedDate" value="@(Model.NewRecord?.StartedDate?.ToString("yyyy-MM-dd") ?? "")" />
+    </td>
+
+    <td>
+        <input type="date" class="cell-select-orange" name="NewRecord.EndDate" value="@(Model.NewRecord?.EndDate?.ToString("yyyy-MM-dd") ?? "")" />
+    </td>
+
+    <td>
+        <input type="date" class="cell-select-orange" name="NewRecord.CreatedDate" value="@(Model.NewRecord?.CreatedDate?.ToString("yyyy-MM-dd") ?? DateTime.Now.ToString("yyyy-MM-dd"))" />
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.Cycle">
+
+            <option value="">--select--</option>
+            @foreach (var i in Model.Cycles)
+            {
+                <option value="@i" selected="@(Model.NewRecord?.Cycle == i ? "selected" : null)">@i</option>
+            }
+
+        </select>
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.ContractNumber">
+            <option value="">--select--</option>
+            @foreach (var i in Model.ContractNumbers)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.RollNom">
+            <option value="">--select--</option>
+            @foreach (var i in Model.RollNomOptions)
+            {
+                <option value="@i" selected="@(Model.NewRecord?.RollNom == i ? "selected" : null)">@i</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.RecLocation">
+            <option value="">--select--</option>
+            @foreach (var i in Model.RecLocations)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.RecLocProp">
+            <option value="">--select--</option>
+            @foreach (var i in Model.RecLocProps)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.RecLocId">
+            <option value="">--select--</option>
+            @foreach (var i in Model.RecLocIds)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.UpName">
+            <option value="">--select--</option>
+            @foreach (var i in Model.UpNames)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.UpIdProp">
+            <option value="">--select--</option>
+            @foreach (var i in Model.UpIdProps)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.UpId">
+            <option value="">--select--</option>
+            @foreach (var i in Model.UpIds)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.UpContractNumber">
+            <option value="">--select--</option>
+            @foreach (var i in Model.UpContractNumbers)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <input type="number" class=" input-box cell-select" name="NewRecord.RecQty" value="@(Model.NewRecord?.RecQty)" />
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.RecRank">
+            <option value="">--select--</option>
+            @foreach (var i in Model.RecRank)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.DelLoc">
+            <option value="">--select--</option>
+            @foreach (var i in Model.DelLocs)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.DelLocId">
+            <option value="">--select--</option>
+            @foreach (var i in Model.DelLocIds)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.DelLocProp">
+            <option value="">--select--</option>
+            @foreach (var i in Model.DelLocProp)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.DownName">
+            <option value="">--select--</option>
+            @foreach (var i in Model.DownNames)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.DownIdProp">
+            <option value="">--select--</option>
+            @foreach (var i in Model.DownIdProps)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.DownId">
+            <option value="">--select--</option>
+            @foreach (var i in Model.DownIds)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.DownContractNumber">
+            <option value="">--select--</option>
+            @foreach (var i in Model.DownContractNumbers)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <input type="number" class="input-box cell-select" name="NewRecord.DelQuantity" value="@(Model.NewRecord?.DelQuantity)" />
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.DelRank">
+            <option value="">--select--</option>
+            @foreach (var i in Model.DelRank)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.DealType">
+            <option value="">--select--</option>
+            @foreach (var i in Model.DealTypes)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.CapacityBlockId">
+            <option value="">--select--</option>
+            @foreach (var i in Model.CapacityBlockIds)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.PkgId">
+            <option value="">--select--</option>
+            @foreach (var i in Model.PkgIds)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <input type="number" class=" input-box cell-select" name="NewRecord.FuelPercent" value="@(Model.NewRecord?.FuelPercent)" />
+    </td>
+
+  @*  <td>
+        <input type="text"
+               name="NewRecord.CreatedBy"
+               class="cell-select"
+               value="@(Context.Session.GetString("UserName") ?? "Admin")"
+               readonly />
+    </td>*@
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.ShipperSpecificId">
+            <option value="">--select--</option>
+            @foreach (var i in Model.ShipperSpecificIds)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.NomTrackingId">
+            <option value="">--select--</option>
+            @foreach (var i in Model.NomTrackingIds)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+
+    <td>
+        <input type="date" class="cell-select" name="NewRecord.NomSubmittedDateTime" value="@(Model.NewRecord?.NomSubmittedDateTime?.ToString("yyyy-MM-ddTHH:mm") ?? "")" />
+    </td>
+
+    <td>
+        <input type="date" class="cell-select" name="NewRecord.NomQuickResponseDateTime" value="@(Model.NewRecord?.NomQuickResponseDateTime?.ToString("yyyy-MM-ddTHH:mm") ?? "")" />
+    </td>
+
+    <td>
+        <input type="text" class=" input-box cell-select" name="NewRecord.ReferenceNumber" value="@(Model.NewRecord?.ReferenceNumber)" />
+    </td>
+
+    <td>
+        <select class="cell-select select2-dynamic" name="NewRecord.AgentDuns">
+            <option value="">--select--</option>
+            @foreach (var i in Model.AgentDunsList)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </td>
+</tr>

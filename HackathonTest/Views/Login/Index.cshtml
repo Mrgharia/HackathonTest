@@ -1,0 +1,70 @@
+﻿@model HackathonTest.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login – NatGasHub</title>
+    <link rel="stylesheet" href="~/css/nomination.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        body.login-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body class="login-page">
+    <div class="login-box">
+
+        <!-- Logo --><img src="~/images/Logo.png" alt="NatGasHub" style="display:block; margin:0 auto; width:100px; object-fit:contain;" />
+
+        <div class="login-title">Welcome Back</div>
+        <div class="login-subtitle">Sign in to your NatGasHub account</div>
+
+        <!-- Error Message -->
+        @if (!ViewData.ModelState.IsValid && ViewData.ModelState[""] != null)
+        {
+            <div class="error-msg">
+                @ViewData.ModelState[""].Errors[0].ErrorMessage
+            </div>
+        }
+
+        <!-- Form -->
+        <form method="post" action="/Login">
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" name="Email" placeholder="Email Address" class="input-field"
+                       value="@Model?.Email" />
+                @Html.ValidationMessage("Email", new { @class = "validation-msg" })
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="Password" placeholder="Password" class="input-field" />
+                @Html.ValidationMessage("Password", new { @class = "validation-msg" })
+            </div>
+
+            <div class="remember-row">
+                <input type="checkbox" id="rememberMe" name="RememberMe" value="true" />
+                <label for="rememberMe">Remember me</label>
+            </div>
+
+            <button type="submit" class="btn-login">Sign In →</button>
+        </form>
+
+        <div class="login-footer">
+            NAESB™ Certified &nbsp;|&nbsp; SOC2 Certified &nbsp;|&nbsp; Copyright© 2026
+        </div>
+
+    </div>
+</body>
+</html>
