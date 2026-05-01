@@ -3,7 +3,6 @@ using System;
 using HackathonTest.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -16,205 +15,190 @@ namespace HackathonTest.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.23")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
-
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.23");
 
             modelBuilder.Entity("HackathonTest.Models.DropDownMaster", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("int");
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("Type")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("Value")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
+                    b.HasKey("Id");
 
-                b.HasKey("Id");
-
-                b.ToTable("DropdownMasters");
-            });
+                    b.ToTable("DropdownMasters");
+                });
 
             modelBuilder.Entity("HackathonTest.Models.NominationRecord", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("int");
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("AgentDuns")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("AgentDuns")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("CapacityBlockId")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("CapacityBlockId")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("ContractNumber")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("ContractNumber")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("CreatedBy")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Cycle")
+                        .HasColumnType("TEXT");
 
-                b.Property<DateTime?>("CreatedDate")
-                    .HasColumnType("datetime2");
+                    b.Property<string>("DealType")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("Cycle")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("DelLoc")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("DealType")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("DelLocId")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("DelLoc")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("DelLocProp")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("DelLocId")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<decimal?>("DelQuantity")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("DelLocProp")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("DelRank")
+                        .HasColumnType("TEXT");
 
-                b.Property<decimal?>("DelQuantity")
-                    .HasColumnType("decimal(18,2)");
+                    b.Property<string>("DownContractNumber")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("DelRank")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("DownId")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("DownContractNumber")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("DownIdProp")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("DownId")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("DownName")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("DownIdProp")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("DownName")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<decimal?>("FuelPercent")
+                        .HasColumnType("TEXT");
 
-                b.Property<DateTime?>("EndDate")
-                    .HasColumnType("datetime2");
+                    b.Property<string>("GisbStatus")
+                        .HasColumnType("TEXT");
 
-                b.Property<decimal?>("FuelPercent")
-                    .HasColumnType("decimal(18,2)");
+                    b.Property<DateTime?>("NomQuickResponseDateTime")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("GisbStatus")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("NomStatus")
+                        .HasColumnType("TEXT");
 
-                b.Property<DateTime?>("NomQuickResponseDateTime")
-                    .HasColumnType("datetime2");
+                    b.Property<DateTime?>("NomSubmittedDateTime")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("NomStatus")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("NomTrackingId")
+                        .HasColumnType("TEXT");
 
-                b.Property<DateTime?>("NomSubmittedDateTime")
-                    .HasColumnType("datetime2");
+                    b.Property<string>("Pipeline")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("NomTrackingId")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("PkgId")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("Pipeline")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("QuantityTypeIndicator")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("PkgId")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("RecLocId")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("QuantityTypeIndicator")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("RecLocProp")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("RecLocId")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("RecLocation")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("RecLocProp")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<decimal?>("RecQty")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("RecLocation")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("RecRank")
+                        .HasColumnType("TEXT");
 
-                b.Property<decimal?>("RecQty")
-                    .HasColumnType("decimal(18,2)");
+                    b.Property<string>("ReferenceNumber")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("RecRank")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("RollNom")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("ReferenceNumber")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<decimal?>("SchedQty")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("RollNom")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Shipper")
+                        .HasColumnType("TEXT");
 
-                b.Property<decimal?>("SchedQty")
-                    .HasColumnType("decimal(18,2)");
+                    b.Property<string>("ShipperSpecificId")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("Shipper")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("StartedDate")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("ShipperSpecificId")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("TransType")
+                        .HasColumnType("TEXT");
 
-                b.Property<DateTime?>("StartedDate")
-                    .HasColumnType("datetime2");
+                    b.Property<string>("UpContractNumber")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("TransType")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("UpId")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("UpContractNumber")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("UpIdProp")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("UpId")
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("UpName")
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("UpIdProp")
-                    .HasColumnType("nvarchar(max)");
+                    b.HasKey("Id");
 
-                b.Property<string>("UpName")
-                    .HasColumnType("nvarchar(max)");
-
-                b.HasKey("Id");
-
-                b.ToTable("NominationRecords");
-            });
+                    b.ToTable("NominationRecords");
+                });
 
             modelBuilder.Entity("HackathonTest.Models.PipelineMaster", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("int");
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
+                    b.HasKey("Id");
 
-                b.HasKey("Id");
-
-                b.ToTable("PipelineMasters");
-            });
+                    b.ToTable("PipelineMasters");
+                });
 
             modelBuilder.Entity("HackathonTest.Models.ShipperMaster", b =>
-            {
-                b.Property<int>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("int");
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
+                    b.HasKey("Id");
 
-                b.HasKey("Id");
-
-                b.ToTable("ShipperMasters");
-            });
+                    b.ToTable("ShipperMasters");
+                });
 #pragma warning restore 612, 618
         }
     }
