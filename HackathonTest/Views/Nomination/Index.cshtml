@@ -100,7 +100,7 @@
         <div class="alert alert-success">@TempData["Message"]</div>
     }
 
-    <div class="custom-view-bar">
+    @* <div class="custom-view-bar">
         <span class="hint">
             You can save upto 5 custom views <a href="#" title="Help">?</a>
         </span>
@@ -113,7 +113,7 @@
             </select>
 
         </div>
-    </div>
+    </div> *@
 
 
     <div class="action-toolbar">
@@ -122,7 +122,10 @@
         </button>
         <form id="deleteTokenForm">
             @Html.AntiForgeryToken()
-            <button type="button" id="deleteBtn" class="btn common-btn  btn-danger">🗑 Delete</button>
+            <button type="button" id="deleteBtn" class="btn common-btn">
+                <i class="fa fa-trash"></i>
+                Delete
+            </button>
 
         </form>
 
@@ -174,11 +177,10 @@ class="btn common-btn btn-outline">
 
         <form method="post" action="@Url.Action("Send","Nomination")" style="display:inline">
             @Html.AntiForgeryToken()
-           
-            <button type="button" id="sendBtn" class="btn common-btn">
-                Send
-            </button>
 
+            <button type="button" id="sendBtn" class="btn common-btn">
+                <i class="fa fa-paper-plane"></i> Send
+            </button>
 
         </form>
 
@@ -221,17 +223,22 @@ class="btn common-btn btn-outline">
         </form>
 
 
-
-
+        <div class="top-scroll">
+            <div class="top-scroll-inner"></div>
+        </div>
+        
         <div class="table-scroll-wrap">
             <table id="nomTable" class="nom-table">
                 <thead>
                     <!-- HEADER ROW -->
                     <tr>
                         <th>
+                        
                             <label class="select-all-wrap">
+                                <input type="checkbox" id="selectAllRows" />
                                 <span>Select All</span>
                             </label>
+                        
                         </th>
                         <th>Nom Status</th>
                         <th>GISB Status</th>
@@ -314,10 +321,10 @@ class="btn common-btn btn-outline">
 
                     <!-- FILTER ROW ONLY -->
                     <tr class="filter-row">
-                        <td>
+                        @* <td>
                             <input type="checkbox" id="selectAllRows" />
-                        </td>
-
+                        </td> *@
+                        <td></td>
                         <td>
 
                             <select class="select2 cell-select filter-select" data-filter="nomStatus">
@@ -378,15 +385,15 @@ class="btn common-btn btn-outline">
                         </td>
 
                         <td>
-                            <input type="date" class="cell-select-orange" data-filter="startedDate" />
+                            <input type="text" id="filterStartedDate" class="cell-select datepicker" data-filter="startedDate" placeholder="dd-mm-yyyy" />
                         </td>
 
                         <td>
-                            <input type="date" class="cell-select-orange" data-filter="endDate" />
+                            <input type="text" id="filterEndDate" class="cell-select datepicker" data-filter="endDate" placeholder="dd-mm-yyyy" />
                         </td>
 
                         <td>
-                            <input type="date" class="cell-select-orange" data-filter="createdDate" />
+                            <input type="text" id="filterCreatedDate" class="cell-select datepicker" data-filter="createdDate" placeholder="dd-mm-yyyy" />
                         </td>
 
                         <td>
@@ -670,11 +677,14 @@ class="btn common-btn btn-outline">
                         </td>
 
                         <td>
-                            <input type="date" class="cell-select" data-filter="nomSubmittedDateTime" />
+
+                            <input type="text" class="cell-select datepicker" id="filterNomsubmittedDate" data-filter="nomSubmittedDateTime" placeholder="dd-mm-yyyy" />
+                          
                         </td>
 
                         <td>
-                            <input type="date" class="cell-select" data-filter="nomQuickResponseDateTime" />
+
+                            <input type="text" id="filterNomresponseDate" class="cell-select datepicker" data-filter="nomQuickResponseDateTime" placeholder="dd-mm-yyyy" />
                         </td>
 
                         <td>
@@ -796,11 +806,13 @@ class="btn common-btn btn-outline">
         </div>
     </div>
 </div>
+
+
+
+
+
 @section Scripts {
     <script>
-
-
-
 
         const nominationData = {
             pipeline: "@Model.Pipeline",
@@ -832,7 +844,8 @@ class="btn common-btn btn-outline">
             downNames: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DownNames)),
             downIdProps: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DownIdProps)),
             downIds: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DownIds)),
-            downContractNumbers: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DownContractNumbers))
+            downContractNumbers: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.DownContractNumbers)),
+            agentDunsList: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.AgentDunsList)),
         };
 
         $(document).ready(function () {
@@ -857,7 +870,7 @@ class="btn common-btn btn-outline">
             $('#nomTable').DataTable().destroy();
         }
 
-        $('#nomTable').DataTable({
+    var table=  $('#nomTable').DataTable({
             scrollX: true,
             scrollY: "200px",
             scrollCollapse: true,
@@ -876,7 +889,35 @@ class="btn common-btn btn-outline">
                 { width: "170px", targets: "_all" }
             ]
         });
-        $(document).on("submit", "#deleteForm", function (e) {
+
+                function syncTopScrollbar() {
+            const top = $(".top-scroll");
+            const topInner = $(".top-scroll-inner");
+            const bottom = $(".dataTables_scrollBody");
+
+            if (!top.length || !topInner.length || !bottom.length) return;
+
+            topInner.width(bottom[0].scrollWidth);
+
+            top.off("scroll.topSync").on("scroll.topSync", function () {
+                bottom.scrollLeft(top.scrollLeft());
+            });
+
+            bottom.off("scroll.topSync").on("scroll.topSync", function () {
+                top.scrollLeft(bottom.scrollLeft());
+            });
+        }
+
+        setTimeout(syncTopScrollbar, 500);
+        $(window).on("resize", syncTopScrollbar);
+
+
+                table.on("draw", function () {
+            syncTopScrollbar();
+        });
+
+
+ $(document).on("submit", "#deleteForm", function (e) {
 
             const checked = $(".row-checkbox:checked");
 

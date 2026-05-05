@@ -1,7 +1,7 @@
 ﻿"use strict";
 console.log("nomination.js loaded");
 let rowIndex = 0;
-
+let activeDateInput = null;
 document.addEventListener("DOMContentLoaded", function () {
 
     console.log("DOM loaded");
@@ -33,22 +33,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     initStaticSelect2();
     reinitializeDynamicSelect2(document);
-
+    initDatePickers(document);
     /* ── Sidebar nav toggle ── */
-    document.querySelectorAll(".nav-item[data-toggle]").forEach(function (el) {
-        el.addEventListener("click", function () {
-            const target = document.getElementById(el.dataset.toggle);
-            if (!target) return;
-
-            const isHidden = window.getComputedStyle(target).display === "none";
-            target.style.display = isHidden ? "block" : "none";
-
-            const arrow = el.querySelector(".nav-arrow");
-            if (arrow) {
-                arrow.textContent = isHidden ? "▾" : "▸";
-            }
-        });
+   
+    $(window).on("load", function () {
+        hideLoader();
     });
+
     function getCellValue(row, colIndex) {
         const cell = row.find("td").eq(colIndex);
 
@@ -96,14 +87,12 @@ document.addEventListener("DOMContentLoaded", function () {
             capacityBlockId: 31,
             pkgId: 32,
             fuelpercent: 33,
-            createdBy: 34,
-            shipperSpecificId: 35,
-            nomTrackingId: 36,
-            nomSubmittedDateTime: 37,
-            nomQuickResponseDateTime: 38,
-            referenceNumber: 39,
-            agentDuns: 40
-        };
+            shipperSpecificId: 34,
+            nomTrackingId: 35,
+            nomSubmittedDateTime: 36,
+            nomQuickResponseDateTime: 37,
+            referenceNumber: 38,
+            agentDuns: 39   };
 
         $(".data-row").each(function () {
             let show = true;
@@ -160,12 +149,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+
+
+    
     /* ── Show Mine Only checkbox ── */
-    if (showMineChk && showMineForm) {
-        showMineChk.addEventListener("change", function () {
-            showMineForm.submit();
-        });
-    }
+    //if (showMineChk && showMineForm) {
+    //    showMineChk.addEventListener("change", function () {
+    //        showMineForm.submit();
+    //    });
+    //}
 
     /* ── Page size change ── */
     if (pageSizeSelect && pageSizeForm) {
@@ -384,6 +376,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 newRow.find("[name='NewRecord.CreatedBy']").val(getLoggedInUser());
                 reinitializeDynamicSelect2(newRow);
+                initDatePickers(newRow);
             },
 
             error: function (xhr) {
@@ -706,14 +699,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 capacityBlockId: getCellValue(row, 31),
                 pkgId: getCellValue(row, 32),
                 fuelPercent: getCellValue(row, 33),
-                createdBy: getCellValue(row, 34),
-                shipperSpecificId: getCellValue(row, 35),
-                nomTrackingId: getCellValue(row, 36),
-                nomSubmittedDateTime: getCellValue(row, 37),
-                nomQuickResponseDateTime: getCellValue(row, 38),
-                referenceNumber: getCellValue(row, 39),
-                agentDuns: getCellValue(row, 40)
-            });
+                shipperSpecificId: getCellValue(row, 34),
+                nomTrackingId: getCellValue(row, 35),
+                nomSubmittedDateTime: getCellValue(row, 36),
+                nomQuickResponseDateTime: getCellValue(row, 37),
+                referenceNumber: getCellValue(row, 38),
+                agentDuns: getCellValue(row, 39)
+});
         });
 
         console.log("Sending records:", records);
@@ -876,20 +868,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         //scroller fixed
-        $(".table-scroll-wrap").on("wheel", function () {
-            $(".select2-dynamic").each(function () {
-                if ($(this).hasClass("select2-hidden-accessible")) {
-                    $(this).select2("close");
-                }
-            });
-            $(".select2").each(function () {
-                if ($(this).hasClass("select2-hidden-accessible")) {
-                    $(this).select2("close");
-                }
-            });
+        //$(".table-scroll-wrap").on("wheel", function () {
+        //    $(".select2-dynamic").each(function () {
+        //        if ($(this).hasClass("select2-hidden-accessible")) {
+        //            $(this).select2("close");
+        //        }
+        //    });
+        //    $(".select2").each(function () {
+        //        if ($(this).hasClass("select2-hidden-accessible")) {
+        //            $(this).select2("close");
+        //        }
+        //    });
+
+
+        //      });
+
+    $(".table-scroll-wrap, .dataTables_scrollBody").on("scroll wheel", function () {
+        $(".select2-dynamic, .select2").each(function () {
+            if ($(this).hasClass("select2-hidden-accessible")) {
+                $(this).select2("close");
+            }
         });
 
-
+        if (activeDateInput) {
+            $(activeDateInput).datepicker("hide");
+            $(activeDateInput).blur();
+            activeDateInput = null;
+        }
+    });
 
 
 
@@ -922,7 +928,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
             console.log("Filter Select2 initialized:", $("select.filter-select, .filter-row select").length);
         }
+        //dates
+    function initDatePickers(scope) {
+        $(scope).find(".datepicker").each(function () {
+            const $input = $(this);
 
+            if ($input.hasClass("hasDatepicker")) {
+                try {
+                    $input.datepicker("destroy");
+                } catch (e) { }
+            }
+
+            $input
+                .removeClass("hasDatepicker")
+                .removeAttr("id");
+
+            $input.datepicker({
+                dateFormat: "dd-mm-yy",
+                appendTo: "body",
+
+                onSelect: function (dateText) {
+                    $(this).val(dateText);
+                    $(this).trigger("input");
+                    $(this).trigger("change");
+                    $(this).blur();
+                },
+
+                beforeShow: function (input, inst) {
+                    activeDateInput = input;
+
+                    setTimeout(function () {
+                        inst.dpDiv.css("z-index", 99999);
+                    }, 0);
+                },
+
+                onClose: function () {
+                    activeDateInput = null;
+                }
+            });
+        });
+    }
         function reinitializeDynamicSelect2(scope) {
             if (!window.jQuery || !$.fn || !$.fn.select2) return;
 
@@ -951,4 +996,35 @@ document.addEventListener("DOMContentLoaded", function () {
             $("#selectAllRows").prop("indeterminate", checked > 0 && checked < total);
         }
 
-    })
+}); function showLoader() {
+    $("#loading").show();
+}
+
+function hideLoader() {
+    $("#loading").hide();
+}
+
+$(document).ajaxStart(function () {
+    showLoader();
+});
+
+$(document).ajaxStop(function () {
+    hideLoader();
+});
+
+$("#refreshBtn").off("click.loader").on("click.loader", function () {
+    showLoader();
+
+    setTimeout(function () {
+        location.reload();
+    }, 300);
+});
+
+$("#validateBtn, #copyRowbtn","#deleteBtn","#sendBtn","#saveBtn").off("click.loader").on("click.loader", function () {
+    showLoader();
+
+    setTimeout(function () {
+        hideLoader();
+    }, 600);
+});
+

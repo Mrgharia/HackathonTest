@@ -129,7 +129,6 @@ namespace HackathonTest.Controllers
         [HttpGet]
         public IActionResult AddRow()
         {
-            Console.WriteLine("AddRow controller hit");
             var vm = new NominationViewModel();
 
             PopulateMasterData(vm);
@@ -455,15 +454,12 @@ namespace HackathonTest.Controllers
                 .OrderBy(x => x)
                 .ToList();
 
-            vm.AgentDunsList = _context.NominationRecords
-                .Select(x => x.AgentDuns)
-                .Where(x => x != null && x != "")
-                .Distinct()
-                .OrderBy(x => x)
-                 .ToList();
-
-
-
+            vm.AgentDunsList = _context.DropdownMasters
+    .Where(x => x.Type == "AgentDuns")
+    .Select(x => x.Value)
+    .Distinct()
+    .OrderBy(x => x)
+    .ToList();
             vm.fuelpercent = _context.NominationRecords
 .Where(x => x.FuelPercent != null)
 .Select(x => x.FuelPercent.Value.ToString())
@@ -481,6 +477,11 @@ namespace HackathonTest.Controllers
                 .Select(x => x.Value)
                 .Distinct()
                 .ToList();
+
+            vm.AgentDunsList = _context.DropdownMasters
+    .Where(x => x.Type == "AgentDuns")
+    .Select(x => x.Value)
+    .ToList();
         }
     }
 }

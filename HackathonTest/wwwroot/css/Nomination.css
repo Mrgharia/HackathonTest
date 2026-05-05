@@ -703,8 +703,79 @@ html {
     border: none !important;
 }
 
+/* jQuery UI datepicker modern style */
 
+.ui-datepicker {
+    background: #fff !important;
+    border: 1px solid #ddd !important;
+    border-radius: 10px !important;
+    padding: 10px !important;
+    font-family: 'DM Sans', sans-serif;
+}
 
+/* header */
+.ui-datepicker-header {
+    background: transparent !important;
+    border: none !important;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* month text */
+.ui-datepicker-title {
+    color: #111827;
+    font-size: 14px;
+}
+
+/* arrows */
+.ui-datepicker-prev,
+.ui-datepicker-next {
+    cursor: pointer;
+}
+
+/* day cells */
+.ui-datepicker td a {
+    border-radius: 6px !important;
+    padding: 6px !important;
+    text-align: center;
+    color: #111827 !important;
+}
+
+    /* hover */
+    .ui-datepicker td a:hover {
+        background: #f3f4f6 !important;
+    }
+
+/* selected date (IMPORTANT 🔥) */
+.ui-datepicker td.ui-datepicker-current-day a {
+    background: #F06B33 !important;
+    color: #fff !important;
+}
+
+/* today highlight */
+.ui-datepicker td.ui-datepicker-today a {
+    background: #ffe8df !important;
+}
+input[type="checkbox"] {
+    accent-color: #F06B33;
+}
+
+.select2-container--default .select2-selection--multiple {
+    min-height: 42px !important;
+    height: 42px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+    .select2-container--default .select2-selection--multiple .select2-selection__rendered {
+        padding-left: 10px !important;
+        color: #333 !important;
+        font-size: 13px !important;
+    }
+
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        display: none !important;
+    }
 
 
 
@@ -714,16 +785,17 @@ html {
     white-space: nowrap;
 }
 
-input[type="date"].cell-select-orange {
-    background-color: #F06B33 !important;
-    color: white !important;
-    border: none;
+input[type="date"].cell-select-orange,
+input[type="date"].cell-select {
+    background-color: #fff !important;
+    color: #495057 !important;
+    border: 1px solid #ced4da !important;
     border-radius: 4px;
     padding: 5px;
     width: 100%;
     text-align: center;
-    outline: none;
-    box-shadow: none;
+    outline: none !important;
+    box-shadow: none !important;
     transition: none;
 }
 
@@ -772,7 +844,19 @@ input[type="date"].cell-select-orange {
     gap: 10px;
     flex-wrap: wrap;
 }
+.select-all-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
 
+    .select-all-wrap input[type="checkbox"] {
+        width: 14px;
+        height: 14px;
+        cursor: pointer;
+    }
 .pagination {
     display: flex;
     align-items: center;
@@ -812,7 +896,7 @@ input[type="date"].cell-select-orange {
 
 .select2-container--default .select2-selection--single {
     height: 36px;
-    border: 1px solid #ccc;
+   
     border-radius: 4px;
     display: flex;
     align-items: center;
@@ -842,22 +926,49 @@ input[type="date"].cell-select-orange {
 .select2-container .select2-selection__clear {
     display: none !important;
 }
+#loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 999999;
+    display: none;
+}
 
-
+    #loading img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 120px;
+        background: #fff;
+        padding: 10px;
+        border-radius: 6px;
+    }
 
 .common-btn {
-    height: 40px;
-    width: 120px;
-    padding: 0 14px;
-    font-size: 14px;
-    border-radius: 6px;
+    width: 110px; 
+    height: 36px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
-    white-space: nowrap;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid #9ca3af;
+    background: #f9fafb;
+    border-radius: 6px;
+    line-height: 1;
+    cursor: pointer;
 }
-
+    .common-btn i,
+    .common-btn svg {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
     .common-btn:hover {
         background-color: #F06B33;
     }
@@ -869,6 +980,69 @@ input[type="date"].cell-select-orange {
     padding: 6px 10px;
     font-size: 13px;
     box-sizing: border-box;
+}
+/* table header + filter ko one block jaisa */
+#nomTable thead tr:first-child th {
+    background: #fff;
+    border-bottom: none !important;
+    font-weight: 700;
+    padding-bottom: 8px;
+}
+
+#nomTable thead tr.filter-row td {
+    background: #fff;
+    border-top: none !important;
+    border-bottom: 2px solid #cbd5e1 !important; /* header/filter separator */
+    padding-top: 6px;
+    padding-bottom: 12px;
+}
+
+.top-scroll {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 16px;
+    margin-bottom: 6px;
+}
+
+.top-scroll-inner {
+    height: 1px;
+}
+
+.top-scroll::-webkit-scrollbar {
+    height: 8px;
+}
+
+.top-scroll::-webkit-scrollbar-thumb {
+    background: #8b8b8b;
+    border-radius: 8px;
+}
+
+.top-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+#nomTable tbody td {
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#nomTable tbody tr:hover td {
+    background: #f8fafc;
+}
+
+/* filter row aur data row ke beech clear separation */
+#nomTable tbody tr:first-child td {
+    border-top: 2px solid #e5e7eb !important;
+}
+
+/* filter controls thoda compact */
+#nomTable thead .filter-row .cell-select,
+#nomTable thead .filter-row select,
+#nomTable thead .filter-row input {
+    height: 36px !important;
+    min-height: 36px !important;
 }
 
 /* Footer */
@@ -883,7 +1057,7 @@ input[type="date"].cell-select-orange {
 }
 
     .app-footer a {
-        color: #F06B33;
+       
         text-decoration: none;
     }
 
@@ -1249,6 +1423,24 @@ body.login-page {
                 font-size: 12px;
             }
 
+
+        .doubleScroll-scroll-wrapper {
+            overflow-x: auto;
+            overflow-y: hidden;
+            height: 20px;
+            width: 100%;
+        }
+
+        .doubleScroll-scroll {
+            height: 20px;
+        }
+
+        .table-scroll-wrap {
+            overflow-x: auto !important;
+            overflow-y: auto !important;
+        }
+
+
         .show-mine-wrap {
             grid-column: 1 / -1;
             margin-top: 4px;
@@ -1259,6 +1451,7 @@ body.login-page {
             border: 1px solid #e5e7eb;
             border-radius: 10px;
             background: #fff;
+            position:relative;
         }
 
         .nom-table thead th {
@@ -1366,15 +1559,6 @@ body.login-page {
     color: white !important;
 }
 
-/* selected value box */
-.select2-container--default .select2-selection--single {
-    border: 1px solid #F06B33 !important;
-}
-
-/* dropdown border */
-.select2-dropdown {
-    border: 1px solid #F06B33 !important;
-}
 
 /* selected option text */
 .select2-container--default .select2-results__option--selected {
@@ -1393,4 +1577,74 @@ td.danger .select2-container .select2-selection {
 .required-star {
     color: red;
     font-weight: bold;
+}
+
+/* Top + Bottom scrollbar same style */
+.top-scroll::-webkit-scrollbar,
+.dataTables_scrollBody::-webkit-scrollbar {
+    height: 9px;
+    width: 5px;
+}
+
+.top-scroll::-webkit-scrollbar-track,
+.dataTables_scrollBody::-webkit-scrollbar-track {
+    background: #eef0f3;
+    border-radius: 10px;
+}
+
+.top-scroll::-webkit-scrollbar-thumb,
+.dataTables_scrollBody::-webkit-scrollbar-thumb {
+    background: #8f8f8f;
+    border-radius: 10px;
+}
+
+    .top-scroll::-webkit-scrollbar-thumb:hover,
+    .dataTables_scrollBody::-webkit-scrollbar-thumb:hover {
+        background: #6f6f6f;
+    }
+.dataTables_scrollBody {
+    border-bottom: none !important;
+}
+
+.dataTables_scroll {
+    border-bottom: none !important;
+}
+
+.table-footer {
+    border-top: none !important;
+}
+
+
+/* Showing text below scrollbar */
+/*.table-footer {
+    margin-top: 10px !important;
+    padding: 8px 16px !important;
+    border-top: none !important;
+    background: white !important;
+}
+*/
+/* Remove orange line, make normal table line */
+.table-footer,
+.app-footer {
+    border-top-color: #e5e7eb !important;
+}
+
+/* Table bottom line normal grey */
+/*.dataTables_scrollBody,
+.table-scroll-wrap {
+    border-bottom: 1px solid #e5e7eb !important;
+}*/
+
+/* If orange line is coming from table-footer */
+.table-footer {
+    border-top: 1px solid #e5e7eb !important;
+}
+
+#sendBtn i {
+    color: #111827;
+}
+
+
+#deleteBtn i {
+    color: #111827 !important;
 }
