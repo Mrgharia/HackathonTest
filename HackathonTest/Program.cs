@@ -163,6 +163,8 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+    db.SaveChanges();
+}
 
 // Pipeline
 if (!app.Environment.IsDevelopment())
