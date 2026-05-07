@@ -645,6 +645,8 @@ html {
     white-space: nowrap;
 }
 
+
+
 /* th should wrap */
 .nom-table th {
     padding: 12px 10px;
@@ -980,6 +982,7 @@ input[type="date"].cell-select {
     padding: 6px 10px;
     font-size: 13px;
     box-sizing: border-box;
+    caret-color:#000 !important;
 }
 /* table header + filter ko one block jaisa */
 #nomTable thead tr:first-child th {
@@ -1318,6 +1321,7 @@ body.login-page {
             min-height: 58px;
             background: white;
             border-bottom: 1px solid #d9dee5;
+            position:relative;
         }
 
         .topbar-fields {
@@ -1648,3 +1652,27 @@ td.danger .select2-container .select2-selection {
 #deleteBtn i {
     color: #111827 !important;
 }
+
+.toast-message {
+    position: absolute;
+    left: 55%;
+    transform: translateX(-50%);
+    top: 5%; /* center vertically inside topbar */
+    transform: translate(-50%, -50%);
+    background: #F06B33;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    z-index: 9999;
+    text-align: center;
+    white-space: nowrap;
+}
+    .toast-message::before {
+        content: "✓";
+        font-size: 24px;
+        margin-right: 14px;
+        vertical-align: middle;
+    }

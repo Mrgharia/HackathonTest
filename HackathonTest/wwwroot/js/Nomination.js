@@ -198,6 +198,19 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    function disableAutocomplete(scope) {
+        $(scope).find("input").each(function () {
+            $(this)
+                .attr("autocomplete", "new-password")
+                .attr("autocorrect", "off")
+                .attr("autocapitalize", "off")
+                .attr("spellcheck", "false");
+        });
+    }
+
+    $(document).ready(function () {
+        disableAutocomplete("#nomTable");
+    });
 
     /* ── Auto-dismiss alerts ── */
     setTimeout(function () {
@@ -293,55 +306,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    function isEmptyValue(value) {
-        return (
-            value === "" ||
-            value === null ||
-            value === undefined ||
-            value === "--select--" ||
-            value === "--Select--" ||
-            value === "0"
-        );
-    }
-
-    function validateField(row, selector) {
-        const field = row.find(selector);
-
-        if (!field.length) return true;
-
-        const td = field.closest("td");
-        const value = field.val();
-
-        if (isEmptyValue(value)) {
-            td.addClass("danger");
-            return false;
-        } else {
-            td.removeClass("danger");
-            return true;
-        }
-    }
+    
 
 
-
-    function validateField(rowId, fieldName) {
-        const field = $("#NominationRecords_" + rowId + "__" + fieldName);
-        const value = field.val();
-
-        if (value === "" || value === "--Select--" || value == null) {
-            field.closest("td").addClass("danger");
-            return false;
-        }
-
-        field.closest("td").removeClass("danger");
-        return true;
-    }
 
 
 
     $("#validateBtn").off("click").on("click", function () {
         if ($(".add-row").length > 0) {
             if (validateAddRowBeforeSave()) {
-                alert("All added rows are valid");
+                showToast("All added rows are valid");
             }
             return;
         }
@@ -349,11 +323,11 @@ document.addEventListener("DOMContentLoaded", function () {
         var selectedRows = $(".row-checkbox:checked").closest("tr");
 
         if (selectedRows.length === 0) {
-            alert("Please select rows to validate");
+            showToast("Please select rows to validate");
             return;
         }
 
-        alert(selectedRows.length + " selected row(s) validated successfully");
+        showToast(selectedRows.length + " selected row(s) validated successfully");
     });
 
 
@@ -376,6 +350,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 newRow.find("[name='NewRecord.CreatedBy']").val(getLoggedInUser());
                 reinitializeDynamicSelect2(newRow);
+                disableAutocomplete(newRow);
                 initDatePickers(newRow);
             },
 
@@ -383,7 +358,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("AddRow error");
                 console.log("Status:", xhr.status);
                 console.log("Response:", xhr.responseText);
-                alert("Error adding row");
+                showToast("Error adding row");
             }
         });
     });
@@ -428,12 +403,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
             },
             success: function () {
-                alert("Records deleted successfully");
+                showToast("Records deleted successfully");
                 location.reload();
             },
             error: function (xhr) {
                 console.log(xhr.responseText);
-                alert("Error deleting records");
+                showToast("Error deleting records");
             }
         });
     });
@@ -446,7 +421,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var rows = $(".add-row");
 
         if (rows.length === 0) {
-            alert("Please add a row first");
+            showToast("Please add a row first");
             return false;
         }
 
@@ -498,7 +473,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         if (!isValid) {
-            alert("Please fill required fields in all added rows");
+            showToast("Please fill required fields in all added rows");
 
             if (firstInvalidField && firstInvalidField.length) {
                 firstInvalidField.focus();
@@ -532,7 +507,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var rows = $(".add-row");
 
         if (rows.length === 0) {
-            alert("Please add at least one row");
+            showToast("Please add at least one row");
             return;
         }
 
@@ -615,9 +590,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     if (savedCount + failedCount === totalRows) {
                         if (failedCount === 0) {
-                            alert("All records saved successfully");
+                            showToast("All records saved successfully");
                         } else {
-                            alert(savedCount + " saved, " + failedCount + " failed");
+                            showToast(savedCount + " saved, " + failedCount + " failed");
                         }
 
                         location.reload();
@@ -629,7 +604,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log(xhr.responseText);
 
                     if (savedCount + failedCount === totalRows) {
-                        alert(savedCount + " saved, " + failedCount + " failed");
+                        showToast(savedCount + " saved, " + failedCount + " failed");
                         location.reload();
                     }
                 }
@@ -656,7 +631,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var rows = $(".row-checkbox:checked").closest("tr");
 
         if (rows.length === 0) {
-            alert("Please select at least one row to send");
+            showToast("Please select at least one row to send");
             return;
         }
 
@@ -720,11 +695,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
             },
             success: function () {
-                alert(records.length + " record(s) sent successfully");
+                showToast(records.length + " record(s) sent successfully");
             },
             error: function (xhr) {
                 console.log(xhr.responseText);
-                alert("Error while sending records");
+                showToast("Error while sending records");
             }
         });
     });
@@ -733,7 +708,7 @@ document.addEventListener("DOMContentLoaded", function () {
             var selectedRows = $(".row-checkbox:checked");
 
             if (selectedRows.length !== 1) {
-                alert("Please select exactly one row to copy");
+                showToast("Please select exactly one row to copy");
                 return;
             }
 
@@ -838,7 +813,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
 
                 error: function () {
-                    alert("Error copying row");
+                    showToast("Error copying row");
                 }
             });
         });
@@ -883,7 +858,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         //      });
 
-    $(".table-scroll-wrap, .dataTables_scrollBody").on("scroll wheel", function () {
+    function closeOpenControls() {
         $(".select2-dynamic, .select2").each(function () {
             if ($(this).hasClass("select2-hidden-accessible")) {
                 $(this).select2("close");
@@ -895,13 +870,77 @@ document.addEventListener("DOMContentLoaded", function () {
             $(activeDateInput).blur();
             activeDateInput = null;
         }
+    }
+
+    /* Normal table scroll */
+    $(".table-scroll-wrap, .dataTables_scrollBody").on("scroll wheel", function () {
+        closeOpenControls();
     });
 
+    /* Filter/header row scroll fix */
+    $(document).on(
+        "wheel",
+        ".dataTables_scrollHead, .dataTables_scrollHead input, .dataTables_scrollHead select",
+        function (e) {
+            closeOpenControls();
+
+            let bodyScroll = $(".dataTables_scrollBody")[0];
+
+            if (bodyScroll) {
+                bodyScroll.scrollTop += e.originalEvent.deltaY;
+                bodyScroll.scrollLeft += e.originalEvent.deltaX;
+            }
+
+            e.preventDefault();
+        }
+    );
+    // cache / autocomplete fix
+    $(document).ready(function () {
+        disableAutocomplete("#nomTable");
+    });
+    /* Body input/select scroll fix */
+    $(document).on(
+        "wheel",
+        ".dataTables_scrollBody input, .dataTables_scrollBody select, .dataTables_scrollBody .select2-container",
+        function (e) {
+            closeOpenControls();
+
+            let bodyScroll = $(".dataTables_scrollBody")[0];
+
+            if (bodyScroll) {
+                bodyScroll.scrollTop += e.originalEvent.deltaY;
+                bodyScroll.scrollLeft += e.originalEvent.deltaX;
+            }
+
+            e.preventDefault();
+        }
+    );
+
+    //toast instead of alert
+
+    function showToast(message) {
+        var toast = $("#toastMessage");
+
+        if (!toast.length) {
+            console.log("toastMessage div not found");
+            return;
+        }
+
+        toast.stop(true, true)
+            .text(message)
+            .css("display", "block")
+            .hide()
+            .fadeIn(200);
+
+        setTimeout(function () {
+            toast.fadeOut(400);
+        }, 2500);
+    }
 
 
 
 
-        function getLoggedInUser() {
+    function getLoggedInUser() {
             const el = document.getElementById("loggedInUserName");
             return el ? el.value : "Admin";
         }

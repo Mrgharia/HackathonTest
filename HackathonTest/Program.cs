@@ -49,7 +49,7 @@ using (var scope = app.Services.CreateScope())
 
             new DropDownMaster { Type = "TransType", Value = "1" },
             new DropDownMaster { Type = "TransType", Value = "2" },
-            new DropDownMaster { Type = "TransType", Value = "2" },
+            new DropDownMaster { Type = "TransType", Value = "3" },
 
             new DropDownMaster { Type = "QuantityTypeIndicator", Value = "Receipt" },
             new DropDownMaster { Type = "QuantityTypeIndicator", Value = "Delivery" },

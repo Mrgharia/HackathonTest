@@ -52,6 +52,9 @@
                 </select>
             </div>
 
+            <div id="toastMessage" class="toast-message" style="display:none;"></div>
+
+
             <div class="topbar-field shipper-field">
                 <label for="shipperSelect">Shipper:</label>
                 <select id="shipperSelect" name="shipper" class="topbar-select select2">
@@ -320,96 +323,36 @@ class="btn common-btn btn-outline">
                     </tr>
 
                     <!-- FILTER ROW ONLY -->
-                    <tr class="filter-row">
-                        @* <td>
-                            <input type="checkbox" id="selectAllRows" />
-                        </td> *@
-                        <td></td>
-                        <td>
 
+
+
+                    <tr class="filter-row">
+                        <td></td>
+
+                        <td>
                             <select class="select2 cell-select filter-select" data-filter="nomStatus">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.NomStatuses)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.NomStatus)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
                             </select>
                         </td>
+
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="gisbStatus">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.GisbStatus)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.GisbStatus)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
                             </select>
-
-
                         </td>
-
-
-
 
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="schedQty">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.SchedQty)
-                                {
-                                    <option value="@i">@i</option>
-                                }
-                            </select>
-
-
-                        </td>
-
-
-
-
-                        <td>
-                            <select class=" select2 cell-select filter-select" data-filter="transType">
-                                <option value="">--select--</option>
-                                @foreach (var t in Model.TransactionTypes)
-                                {
-                                    <option value="@t">@t</option>
-                                }
-                            </select>
-                        </td>
-
-                        <td>
-                            <select class=" select2 cell-select filter-select" data-filter="quantityTypeIndicator">
-                                <option value="">--select--</option>
-                                <option value="Receipt">Receipt</option>
-                                <option value="Delivery">Delivery</option>
-                                <option value="Both">Both</option>
-                            </select>
-                        </td>
-
-                        <td>
-                            <input type="text" id="filterStartedDate" class="cell-select datepicker" data-filter="startedDate" placeholder="dd-mm-yyyy" />
-                        </td>
-
-                        <td>
-                            <input type="text" id="filterEndDate" class="cell-select datepicker" data-filter="endDate" placeholder="dd-mm-yyyy" />
-                        </td>
-
-                        <td>
-                            <input type="text" id="filterCreatedDate" class="cell-select datepicker" data-filter="createdDate" placeholder="dd-mm-yyyy" />
-                        </td>
-
-                        <td>
-                            <select class=" select2 cell-select filter-select" data-filter="cycle">
-                                <option value="">--select--</option>
-                                @foreach (var c in Model.Cycles)
-                                {
-                                    <option value="@c">@c</option>
-                                }
-                            </select>
-                        </td>
-
-                        <td>
-                            <select class=" select2  cell-select filter-select" data-filter="contractNumber">
-                                <option value="">--select--</option>
-                                @foreach (var i in Model.ContractNumbers)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.SchedQty)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
@@ -417,17 +360,63 @@ class="btn common-btn btn-outline">
                         </td>
 
                         <td>
-                            <select class=" select2  cell-select filter-select" data-filter="rollNom">
+                            <select class="select2 cell-select filter-select" data-filter="transType">
                                 <option value="">--select--</option>
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.TransType)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
+                                {
+                                    <option value="@i">@i</option>
+                                }
                             </select>
                         </td>
 
                         <td>
-                            <select class="select2  cell-select filter-select" data-filter="recLocation">
+                            <select class="select2 cell-select filter-select" data-filter="quantityTypeIndicator">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.RecLocations)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.QuantityTypeIndicator)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </select>
+                        </td>
+
+                        <td><input type="text" id="filterStartedDate" class="cell-select datepicker" data-filter="startedDate" placeholder="dd-mm-yyyy" /></td>
+                        <td><input type="text" id="filterEndDate" class="cell-select datepicker" data-filter="endDate" placeholder="dd-mm-yyyy" /></td>
+                        <td><input type="text" id="filterCreatedDate" class="cell-select datepicker" data-filter="createdDate" placeholder="dd-mm-yyyy" /></td>
+
+                        <td>
+                            <select class="select2 cell-select filter-select" data-filter="cycle">
+                                <option value="">--select--</option>
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.Cycle)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </select>
+                        </td>
+
+                        <td>
+                            <select class="select2 cell-select filter-select" data-filter="contractNumber">
+                                <option value="">--select--</option>
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.ContractNumber)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </select>
+                        </td>
+
+                        <td>
+                            <select class="select2 cell-select filter-select" data-filter="rollNom">
+                                <option value="">--select--</option>
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.RollNom)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </select>
+                        </td>
+
+                        <td>
+                            <select class="select2 cell-select filter-select" data-filter="recLocation">
+                                <option value="">--select--</option>
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.RecLocation)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
@@ -437,7 +426,7 @@ class="btn common-btn btn-outline">
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="recLocProp">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.RecLocProps)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.RecLocProp)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
@@ -447,7 +436,7 @@ class="btn common-btn btn-outline">
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="recLocId">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.RecLocIds)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.RecLocId)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
@@ -455,9 +444,9 @@ class="btn common-btn btn-outline">
                         </td>
 
                         <td>
-                            <select class=" select2 cell-select filter-select" data-filter="upName">
+                            <select class="select2 cell-select filter-select" data-filter="upName">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.UpNames)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.UpName)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
@@ -467,7 +456,7 @@ class="btn common-btn btn-outline">
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="upIdProp">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.UpIdProps)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.UpIdProp)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
@@ -475,9 +464,9 @@ class="btn common-btn btn-outline">
                         </td>
 
                         <td>
-                            <select class="select2  cell-select filter-select" data-filter="upId">
+                            <select class="select2 cell-select filter-select" data-filter="upId">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.UpIds)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.UpId)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
@@ -487,7 +476,7 @@ class="btn common-btn btn-outline">
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="upContractNumber">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.UpContractNumbers)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.UpContractNumber)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
@@ -495,21 +484,19 @@ class="btn common-btn btn-outline">
                         </td>
 
                         <td>
-
                             <select class="select2 cell-select filter-select" data-filter="recQty">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.recQty)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.RecQty)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
                             </select>
-
                         </td>
 
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="recRank">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.RecRank)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.RecRank)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
@@ -519,7 +506,7 @@ class="btn common-btn btn-outline">
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="delLoc">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.DelLocs)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.DelLoc)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
@@ -529,7 +516,7 @@ class="btn common-btn btn-outline">
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="delLocId">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.DelLocIds)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.DelLocId)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
@@ -537,18 +524,19 @@ class="btn common-btn btn-outline">
                         </td>
 
                         <td>
-                            <select class=" select2 cell-select filter-select" data-filter="delLocProp">
+                            <select class="select2 cell-select filter-select" data-filter="delLocProp">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.DelLocProp)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.DelLocProp)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
                             </select>
                         </td>
+
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="downName">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.DownNames)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.DownName)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
@@ -558,7 +546,7 @@ class="btn common-btn btn-outline">
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="downIdProp">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.DownIdProps)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.DownIdProp)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
@@ -568,7 +556,7 @@ class="btn common-btn btn-outline">
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="downId">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.DownIds)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.DownId)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
@@ -578,33 +566,27 @@ class="btn common-btn btn-outline">
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="downContractNumber">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.DownContractNumbers)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.DownContractNumber)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
                             </select>
                         </td>
 
-
-
-
                         <td>
-
                             <select class="select2 cell-select filter-select" data-filter="delQuantity">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.DelQuantity)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.DelQuantity)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
                             </select>
-
-
                         </td>
 
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="delRank">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.DelRank)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.DelRank)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
@@ -614,7 +596,7 @@ class="btn common-btn btn-outline">
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="dealType">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.DealTypes)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.DealType)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
@@ -624,7 +606,7 @@ class="btn common-btn btn-outline">
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="capacityBlockId">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.CapacityBlockIds)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.CapacityBlockId)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
@@ -634,7 +616,7 @@ class="btn common-btn btn-outline">
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="pkgId">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.PkgIds)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.PkgId)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
@@ -644,22 +626,17 @@ class="btn common-btn btn-outline">
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="fuelpercent">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.fuelpercent)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.FuelPercent)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
                             </select>
-
                         </td>
 
-                   @*     <td>
-                            <input type="text" class="cell-select" data-filter="createdBy" />
-                        </td>
-                        *@
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="shipperSpecificId">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.ShipperSpecificIds)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.ShipperSpecificId)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
@@ -669,46 +646,38 @@ class="btn common-btn btn-outline">
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="nomTrackingId">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.NomTrackingIds)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.NomTrackingId)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
                             </select>
                         </td>
 
-                        <td>
-
-                            <input type="text" class="cell-select datepicker" id="filterNomsubmittedDate" data-filter="nomSubmittedDateTime" placeholder="dd-mm-yyyy" />
-                          
-                        </td>
-
-                        <td>
-
-                            <input type="text" id="filterNomresponseDate" class="cell-select datepicker" data-filter="nomQuickResponseDateTime" placeholder="dd-mm-yyyy" />
-                        </td>
+                        <td><input type="text" class="cell-select datepicker" id="filterNomsubmittedDate" data-filter="nomSubmittedDateTime" placeholder="dd-mm-yyyy" /></td>
+                        <td><input type="text" id="filterNomresponseDate" class="cell-select datepicker" data-filter="nomQuickResponseDateTime" placeholder="dd-mm-yyyy" /></td>
 
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="referenceNumber">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.ReferenceNumbers)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.ReferenceNumber)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
                             </select>
-
-
-
                         </td>
+
                         <td>
                             <select class="select2 cell-select filter-select" data-filter="agentDuns">
                                 <option value="">--select--</option>
-                                @foreach (var i in Model.AgentDunsList)
+                                @foreach (var i in Model.Records.Select(x => Convert.ToString(x.AgentDuns)).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct())
                                 {
                                     <option value="@i">@i</option>
                                 }
                             </select>
                         </td>
                     </tr>
+
+
                 </thead>
                 <tbody id="nomTableBody">
 
